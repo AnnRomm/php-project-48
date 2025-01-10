@@ -1,0 +1,49 @@
+name: my-check
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      # Install project
+      - name: Install
+        run: make install
+      #Validate composer.json
+      - name: Install dependencies
+        run: make validate
+      # Run Linter
+      - name: Run linter
+        run: make lint
+      #Tests
+      - name: Run tests
+        run: make test
+
+      - name: Test & publish code coverage
+        # Publish code coverage on Code Climate
+        # https://github.com/paambaati/codeclimate-action
+        uses: paambaati/codeclimate-action@v5
+        # Add Code Climate secret key
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_ID }}
+          XDEBUG_MODE: coverage
+        with:
+          coverageCommand: make test-coverage
+          coverageLocations: ${{ github.workplace }}/build/logs/clover.xml:clover
+          debug: true

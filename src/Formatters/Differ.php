@@ -6,8 +6,8 @@ use function Functional\sort;
 
 function genDiff(string $firstFile, string $secondFile)
 {
-    $firstFile = __DIR__.'/../../src/file1.json';
-    $secondFile = __DIR__.'/../../src/file2.json';
+    $firstFile = __DIR__.'/../../tests/fixtures/file1.json';
+    $secondFile = __DIR__.'/../../tests/fixtures/file2.json';
 
     $firstFileContent = file_get_contents($firstFile);
     $secondFileContent = file_get_contents($secondFile);
@@ -46,7 +46,7 @@ function compareArrays(array $data1, array $data2): string
     }, []);
 
     $result = ['{', ...$arrayForJson, '}'];
-    return implode("\n", $result);
+    return implode("\n", $result) . "\n";
 }
 
 function normalizeString($value): string
