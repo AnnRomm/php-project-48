@@ -1,0 +1,9 @@
+/vendor/
+logs
+.idea/
+*.swo
+*.swp
+*.cache
+build
+file1.json
+file2.json
