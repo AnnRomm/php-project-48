@@ -4,7 +4,7 @@ namespace Differ\Formatters\Stylish;
 
 function formatStylish(array $difference): string
 {
-    return formatDiff($difference)."\n";
+    return formatDiff($difference) . "\n";
 }
 
 function formatDiff(array $difference, int $depth = 0): string

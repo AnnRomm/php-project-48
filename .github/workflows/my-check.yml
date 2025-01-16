@@ -31,6 +31,8 @@ jobs:
       # Run Linter
       - name: Run linter
         run: make lint
+      - name: Fix linter
+        run: make lint-fix
       #Tests
       - name: Run tests
         run: make test
