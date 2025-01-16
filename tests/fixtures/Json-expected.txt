@@ -1,0 +1,119 @@
+{
+    "status": "root",
+    "value": [
+        {
+            "status": "node",
+            "key": "common",
+            "value": [
+                {
+                    "status": "added",
+                    "key": "follow",
+                    "value": false
+                },
+                {
+                    "status": "unchanged",
+                    "key": "setting1",
+                    "value": "Value 1"
+                },
+                {
+                    "status": "deleted",
+                    "key": "setting2",
+                    "value": 200
+                },
+                {
+                    "status": "changed",
+                    "key": "setting3",
+                    "valueBefore": true,
+                    "valueAfter": null
+                },
+                {
+                    "status": "added",
+                    "key": "setting4",
+                    "value": "blah blah"
+                },
+                {
+                    "status": "added",
+                    "key": "setting5",
+                    "value": {
+                        "key5": "value5"
+                    }
+                },
+                {
+                    "status": "node",
+                    "key": "setting6",
+                    "value": [
+                        {
+                            "status": "node",
+                            "key": "doge",
+                            "value": [
+                                {
+                                    "status": "changed",
+                                    "key": "wow",
+                                    "valueBefore": "",
+                                    "valueAfter": "so much"
+                                }
+                            ]
+                        },
+                        {
+                            "status": "unchanged",
+                            "key": "key",
+                            "value": "value"
+                        },
+                        {
+                            "status": "added",
+                            "key": "ops",
+                            "value": "vops"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "status": "node",
+            "key": "group1",
+            "value": [
+                {
+                    "status": "changed",
+                    "key": "baz",
+                    "valueBefore": "bas",
+                    "valueAfter": "bars"
+                },
+                {
+                    "status": "unchanged",
+                    "key": "foo",
+                    "value": "bar"
+                },
+                {
+                    "status": "changed",
+                    "key": "nest",
+                    "valueBefore": {
+                        "key": "value"
+                    },
+                    "valueAfter": "str"
+                }
+            ]
+        },
+        {
+            "status": "deleted",
+            "key": "group2",
+            "value": {
+                "abc": 12345,
+                "deep": {
+                    "id": 45
+                }
+            }
+        },
+        {
+            "status": "added",
+            "key": "group3",
+            "value": {
+                "deep": {
+                    "id": {
+                        "number": 45
+                    }
+                },
+                "fee": 100500
+            }
+        }
+    ]
+}

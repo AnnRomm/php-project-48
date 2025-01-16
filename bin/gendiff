@@ -11,7 +11,7 @@ if (file_exists($autoloadPath1)) {
 }
 
 require __DIR__.'/../vendor/docopt/docopt/src/docopt.php';
-use function Formatters\Differ\genDiff;
+use function Differ\genDiff;
 
 $doc = <<<DOC
 Generate diff
@@ -29,5 +29,9 @@ DOC;
 
 $args = Docopt::handle($doc, ['version'=>'gendiff 1.0']);
 
-$diff = genDiff('file1.json', 'file2.json');
-print_r($diff);
+$filePathFirst = $args['<firstFile>']; // путь к 1 файлу
+$filePathSecond = $args['<secondFile>']; // путь ко 2 файлу
+$format = $args['--format']; // формат
+
+$diff = genDiff($filePathFirst, $filePathSecond, $format);
+print_r($diff . PHP_EOL);
