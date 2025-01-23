@@ -4,28 +4,15 @@ namespace Formatters\Parsers;
 
 use Symfony\Component\Yaml\Yaml;
 
-function parse(string $filePath): array
+function parse(string $filePath, string $format): array
 {
-    $extension = pathinfo($filePath)['extension'] ?? null;
-    $basename = pathinfo($filePath)['basename'];
-    if (is_readable($filePath)) {
-        return match ($extension) {
-            'json' => parseJson($filePath),
-            'yaml', 'yml' => parseYaml($filePath)
-        };
-    } else {
-        throw new \RuntimeException("Error reading file: $basename");
+    switch ($format) {
+        case "json":
+            return json_decode($filePath, true);
+        case "yml":
+        case "yaml":
+            return Yaml::parse($filePath);
+        default:
+            throw new \RuntimeException("Error reading extension: {$format}");
     }
-}
-
-function parseJson(string $filePath): array
-{
-    $fileContent = file_get_contents($filePath);
-    return json_decode($fileContent ?: '', true) ?? [];
-}
-
-function parseYaml(string $filePath): array
-{
-    $fileContent = file_get_contents($filePath);
-    return Yaml::parse($fileContent ?: '') ?? [];
 }

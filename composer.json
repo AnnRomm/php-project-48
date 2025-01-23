@@ -1,16 +1,15 @@
 {
   "name": "hexlet/code",
   "description": "hexlet php-project-48",
-  "bin": [
-    "bin/gendiff"
-  ],
+  "bin":
+    "bin/gendiff",
   "type": "library",
   "license": "MIT",
   "autoload": {
     "files": [
       "src/Differ.php",
       "src/Parsers.php",
-      "src/Format.php",
+      "src/Formatters.php",
       "src/Formatters/Stylish.php",
       "src/Formatters/Plain.php",
       "src/Formatters/Json.php"

@@ -1,6 +1,6 @@
 <?php
 
-namespace Differ\Format;
+namespace Differ\Formatters;
 
 use function Differ\Formatters\Stylish\formatStylish;
 use function Differ\Formatters\Plain\formatPlain;
@@ -16,6 +16,6 @@ function chooseFormatter($format, $diff)
         case 'json':
             return formatJson($diff);
         default:
-            throw new Exception("Unsupported format: $format");
+            throw new \RuntimeException("Unsupported format: $format");
     }
 }

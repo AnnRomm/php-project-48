@@ -1,17 +1,32 @@
 <?php
 
-namespace Differ;
+namespace Differ\Differ;
 
 use function Functional\sort;
 use function Formatters\Parsers\parse;
-use function Differ\Format\chooseFormatter;
+use function Differ\Formatters\chooseFormatter;
 
 function genDiff(string $filePathFirst, string $filePathSecond, string $format = 'stylish'): string
 {
-    $fileContentFirst = parse($filePathFirst);
-    $fileContentSecond = parse($filePathSecond);
+    $formatFirst = getFileFormat($filePathFirst);
+    $formatSecond = getFileFormat($filePathSecond);
+
+    $fileContentFirst = parse(file_get_contents($filePathFirst), $formatFirst);
+    $fileContentSecond = parse(file_get_contents($filePathSecond), $formatSecond);
+
     $diff = getDifference($fileContentFirst, $fileContentSecond);
     return chooseFormatter($format, $diff);
+}
+
+function getFileFormat(string $filePath): string
+{
+    $extension = pathinfo($filePath)['extension'] ?? null;
+    $basename = pathinfo($filePath)['basename'];
+    if (is_readable($filePath)) {
+        return $extension;
+    } else {
+        throw new \RuntimeException("Error reading file: $basename");
+    }
 }
 
 function getDifference(array $fileContentFirst, array $fileContentSecond): array
@@ -73,5 +88,5 @@ function getSortedUnionKeys(array $firstArray, array $secondArray): array
             array_keys($secondArray)
         )
     );
-    return sort($mergedKeys, fn ($left, $right) => strcmp($left, $right));
+    return sort($mergedKeys, fn($left, $right) => strcmp($left, $right));
 }

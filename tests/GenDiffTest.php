@@ -4,70 +4,43 @@ namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 
-use function Differ\genDiff;
+use function Differ\Differ\genDiff;
 
 class GenDiffTest extends TestCase
 {
-    public function testStylish()
+    private string $path = __DIR__ . "/fixtures/";
+
+    private function getFilePath($name): string
     {
-        $expected = file_get_contents(__DIR__ . "/fixtures/Stylish-expected.txt");
-        $this->assertEquals(
-            $expected,
-            genDiff(
-                __DIR__ . "/fixtures/file3.json",
-                __DIR__ . "/fixtures/file4.json",
-                "stylish"
-            )
-        );
-        $this->assertEquals(
-            $expected,
-            genDiff(
-                __DIR__ . "/fixtures/file3.yaml",
-                __DIR__ . "/fixtures/file4.yml",
-                "stylish"
-            )
+        return $this->path . $name;
+    }
+
+    /**
+     * @dataProvider runDifferProvider
+     */
+    public function testFileComparison($file1, $file2, $format, $expected): void
+    {
+        $this->assertStringEqualsFile(
+            $this->getFilePath($expected),
+            genDiff($this->getFilePath($file1), $this->getFilePath($file2), $format)
         );
     }
 
-    public function testPlain()
+    public function runDifferProvider(): array
     {
-        $expected = file_get_contents(__DIR__ . "/fixtures/Plain-expected.txt");
-        $this->assertEquals(
-            $expected,
-            genDiff(
-                __DIR__ . "/fixtures/file3.json",
-                __DIR__ . "/fixtures/file4.json",
-                "plain"
-            )
-        );
-        $this->assertEquals(
-            $expected,
-            genDiff(
-                __DIR__ . "/fixtures/file3.yaml",
-                __DIR__ . "/fixtures/file4.yml",
-                "plain"
-            )
-        );
-    }
+        return [
 
-    public function testJson()
-    {
-        $expected = file_get_contents(__DIR__ . "/fixtures/Json-expected.txt");
-        $this->assertEquals(
-            $expected,
-            genDiff(
-                __DIR__ . "/fixtures/file3.json",
-                __DIR__ . "/fixtures/file4.json",
-                "json"
-            )
-        );
-        $this->assertEquals(
-            $expected,
-            genDiff(
-                __DIR__ . "/fixtures/file3.yaml",
-                __DIR__ . "/fixtures/file4.yml",
-                "json"
-            )
-        );
+            'JSON format: JSON vs JSON' => ['file1.json', 'file2.json', 'json', 'Json-expected.txt'],
+            'JSON format: YAML vs YML' => ['file1.yaml', 'file2.yml', 'json', 'Json-expected.txt'],
+            'JSON format: JSON vs YML' => ['file1.json', 'file2.yml', 'json', 'Json-expected.txt'],
+
+            'Stylish format: JSON vs JSON' => ['file1.json', 'file2.json', 'stylish', 'Stylish-expected.txt'],
+            'Stylish format: YAML vs YML' => ['file1.yaml', 'file2.yml', 'stylish', 'Stylish-expected.txt'],
+            'Stylish format: JSON vs YML' => ['file1.json', 'file2.yml', 'stylish', 'Stylish-expected.txt'],
+
+            'Plain format: JSON vs JSON' => ['file1.json', 'file2.json', 'plain', 'Plain-expected.txt'],
+            'Plain format: YAML vs YML' => ['file1.yaml', 'file2.yml', 'plain', 'Plain-expected.txt'],
+            'Plain format: JSON vs YML' => ['file1.json', 'file2.yml', 'plain', 'Plain-expected.txt']
+        ];
     }
 }
