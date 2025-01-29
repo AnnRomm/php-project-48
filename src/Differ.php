@@ -2,31 +2,35 @@
 
 namespace Differ\Differ;
 
-use function Functional\sort;
-use function Formatters\Parsers\parse;
 use function Differ\Formatters\chooseFormatter;
+use function Formatters\Parsers\parse;
+use function Functional\sort;
 
 function genDiff(string $filePathFirst, string $filePathSecond, string $format = 'stylish'): string
 {
-    $formatFirst = getFileFormat($filePathFirst);
-    $formatSecond = getFileFormat($filePathSecond);
+    $fileDataFirst = getFileData($filePathFirst);
+    $fileDataSecond = getFileData($filePathSecond);
 
-    $fileContentFirst = parse(file_get_contents($filePathFirst), $formatFirst);
-    $fileContentSecond = parse(file_get_contents($filePathSecond), $formatSecond);
+    $fileContentFirst = parse($fileDataFirst['content'], $fileDataFirst['extension']);
+    $fileContentSecond = parse($fileDataSecond['content'], $fileDataSecond['extension']);
 
     $diff = getDifference($fileContentFirst, $fileContentSecond);
     return chooseFormatter($format, $diff);
 }
 
-function getFileFormat(string $filePath): string
+function getFileData(string $filePath): array
 {
-    $extension = pathinfo($filePath)['extension'] ?? null;
-    $basename = pathinfo($filePath)['basename'];
-    if (is_readable($filePath)) {
-        return $extension;
-    } else {
-        throw new \RuntimeException("Error reading file: $basename");
+    if (!file_exists($filePath) || !is_readable($filePath)) {
+        throw new \RuntimeException("Error reading file: " . basename($filePath));
     }
+
+    $extension = pathinfo($filePath)['extension'] ?? null;
+    $content = file_get_contents($filePath);
+
+    if ($content === false) {
+        throw new \RuntimeException("Failed to read file: " . basename($filePath));
+    }
+    return ['content' => $content, 'extension' => $extension];
 }
 
 function getDifference(array $fileContentFirst, array $fileContentSecond): array

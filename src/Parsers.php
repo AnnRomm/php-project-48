@@ -6,9 +6,6 @@ use Symfony\Component\Yaml\Yaml;
 
 function parse(string|false $currentData, string $format): array
 {
-    if ($currentData === false) {
-        throw new \RuntimeException("Invalid file content provided for parsing.");
-    }
     switch ($format) {
         case "json":
             return json_decode($currentData, true);

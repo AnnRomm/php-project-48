@@ -4,9 +4,6 @@ install:
 validate:
 	composer validate
 
-console:
-	composer exec --verbose psysh
-
 lint:
 	composer exec --verbose phpcs -- --standard=PSR12 src tests bin
 
