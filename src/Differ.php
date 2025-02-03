@@ -26,9 +26,10 @@ function getFileData(string $filePath): array
 
     $extension = pathinfo($filePath, PATHINFO_EXTENSION);
 
-    if (empty($extension)) {
+    if ($extension === '') {
         throw new \RuntimeException("File has no extension: " . basename($filePath));
     }
+
     $content = file_get_contents($filePath);
 
     if ($content === false) {
