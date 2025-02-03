@@ -24,7 +24,11 @@ function getFileData(string $filePath): array
         throw new \RuntimeException("Error reading file: " . basename($filePath));
     }
 
-    $extension = pathinfo($filePath)['extension'] ?? null;
+    $extension = pathinfo($filePath, PATHINFO_EXTENSION);
+
+    if (empty($extension)) {
+        throw new \RuntimeException("File has no extension: " . basename($filePath));
+    }
     $content = file_get_contents($filePath);
 
     if ($content === false) {
